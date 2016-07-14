@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-float tempaverage1  = 0;
+float tempaverage1    = 0;
 float tempaverage2  = 0;
 float tempaverage3  = 0;
 float tempaverage4  = 0;
@@ -12,6 +12,7 @@ int val;
 void setup()
 {
   myservo.attach(9);  
+  pinMode(13,OUTPUT);
   Serial.begin(9600);
 }
 
@@ -27,10 +28,13 @@ void loop()
 
   
   float tempaveragefinal = ( tempaverage1 + tempaverage2 +tempaverage3+ tempaverage4 +tempaverage5)/5;
-  tempaverage2 = tempaverage1;
-  tempaverage3 = tempaverage2;
-  tempaverage4 = tempaverage3;
   tempaverage5 = tempaverage4;
+  tempaverage4 = tempaverage3;
+  tempaverage3 = tempaverage2;
+  tempaverage2 = tempaverage1;
+  
+  
+  
   
   Serial.print(tempaveragefinal); 
   Serial.println(" degrees C");
@@ -38,12 +42,15 @@ void loop()
   
   if (tempaveragefinal <= 26.0){
   myservo.write(0);
+  digitalWrite(13,LOW);
   delay(50); 
   }
   
   if (tempaveragefinal >= 28.0){
-  myservo.write(180); 
+  myservo.write(180);
+  digitalWrite(13,HIGH);
   delay(50);
   }
   delay(200);                          
-}
+} 
+
